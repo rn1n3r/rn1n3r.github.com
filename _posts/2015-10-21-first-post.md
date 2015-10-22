@@ -11,7 +11,4 @@ I'll also document other projects, endeavours and just random thoughts about lif
 
 But I have an orgo exam to write soon, so I guess I'll just leave this post with this:
 
-![BOOM!][TNT]
-
-[TNT]: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Trinitrotoluene.svg/1000px-Trinitrotoluene.svg.png 
-{: height="36px" width="36px"}
+![BOOM!](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Trinitrotoluene.svg/200px-Trinitrotoluene.svg.png)
