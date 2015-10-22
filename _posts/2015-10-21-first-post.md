@@ -13,5 +13,5 @@ But I have an orgo exam to write soon, so I guess I'll just leave this post with
 
 ![BOOM!][TNT]
 
-[TNT]: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Trinitrotoluene.svg/1000px-Trinitrotoluene.svg.png
-{: height="36x" width="6x"}
+[TNT]: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Trinitrotoluene.svg/1000px-Trinitrotoluene.svg.png 
+{: height="36px" width="36px"}
