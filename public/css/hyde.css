@@ -248,3 +248,14 @@ a.sidebar-nav-item:focus {
 .theme-base-0f .related-posts li a:hover {
   color: #8f5536;
 }
+
+
+
+/* Purple */
+.theme-base-0g .sidebar {
+  background-color: #3F1875;
+}
+.theme-base-0e .content a,
+.theme-base-0e .related-posts li a:hover {
+  color: #3F1875;
+}
