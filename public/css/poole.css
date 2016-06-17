@@ -332,6 +332,10 @@ tbody tr:nth-child(odd) th {
 .post {
   margin-bottom: 4em;
 }
+.post a{
+  color: #268bd2;
+  text-decoration: underline;
+}
 
 /* Blog post or page title */
 .page-title,
