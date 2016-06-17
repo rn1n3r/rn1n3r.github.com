@@ -332,7 +332,7 @@ tbody tr:nth-child(odd) th {
 .post {
   margin-bottom: 4em;
 }
-.post a{
+.post a {
   color: #268bd2;
   text-decoration: underline;
 }
@@ -342,6 +342,8 @@ tbody tr:nth-child(odd) th {
 .post-title,
 .post-title a {
   color: #303030;
+  text-decoration: none;
+
 }
 .page-title,
 .post-title {
