@@ -22,4 +22,6 @@ paginate:         5
 version:          2.1.0
 
 gems:
-  - jemoji
+  - jemoj
+
+excerpt_separator: <!--more-->
