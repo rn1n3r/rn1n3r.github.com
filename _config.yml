@@ -24,4 +24,4 @@ gems:
   - jemoji
 
 excerpt_separator:
-  -  <!--more-->
+  -  '<!--more-->'
