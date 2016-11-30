@@ -16,9 +16,11 @@ title: Home
 
     {% if post.content contains '<!--more-->' %}
       {{ post.content | split:'<!--more-->' | first }}
+      Continue reading...
     {% else %}
       {{ post.content }}
     {% endif %}
+
   </div>
   {% endfor %}
 </div>
