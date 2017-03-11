@@ -26,3 +26,7 @@ The last two core third-year courses in the Biophysics program at Western have b
     However, as I do like math more than most in my program, your mileage will definitely vary with this course. 
     
     **Full disclosure**: I have done research with the professor of 3507.
+
+**Final thoughts**: From the last two posts, I hope anyone reading them has gotten a good feel of what Medical Biophyics at UWO is like. These are the mandatory courses for everyone in the program (apart from Optics), so I believe it to be quite representative of the program. I feel like while we explore a variety of different topics, one problem is that no single topic is every studied at a deep level simply because most people in the program (myself included) lack the sufficient biology, math, physics, or engineering background. Medical biophysics as a field is really the result of many experts in vastly different fields coming together to solve medical problems, so it's really hard to teach this discipline at an undergraduate level. 
+
+I feel that this program will definitely benefit people who are self-directed learners, those who seek to explore things they are interested in on their own. The different courses will definitely teach you to problem solve more than it will give you a rich knowledge of anything in particular (as opposed to modules like **Physiology** or **Microbiology and Immunology**). Whether or not that's what you're looking for is up to you.
