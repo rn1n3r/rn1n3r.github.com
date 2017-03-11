@@ -23,4 +23,6 @@ The last two core third-year courses in the Biophysics program at Western have b
 
 	The course itself focuses on modelling the diffusion of oxygen through different medium and in different geometry using differential equations and other mathematical tools. It's a little math heavy, and that does turn some people off too. But apart from the actual content, I think it's an important course because it teaches you how to approach problems in a systematic way (we are taught a "7 steps of problem solving"). While critics say that it's a little ridiculous that we're **tested** on these steps, I think that teaching a general problem solving framework is a really good idea, and applying this technique to mathematical modelling problems helps place the techniques into a biophysical context. Oxygen transport might not be very important to most people, but learning to develop models to describe biophysical phenomena is a useful skill and feels like a major theme in many of our third year courses (see transport systems, biomechanics, math transforms).
     
-    However, as I do like math more than most in my program, your mileage will definitely vary with this course. Full disclosure: I have done research with the professor of 3507.
+    However, as I do like math more than most in my program, your mileage will definitely vary with this course. 
+    
+    **Full disclosure**: I have done research with the professor of 3507.
