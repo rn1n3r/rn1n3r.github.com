@@ -11,6 +11,11 @@ The last two core third-year courses in the Biophysics program at Western have b
 	The first part of the course started with an overview of imaging science and how its role in medicine, including looking at SNR, contrast, and ROC curves. In particular, learning about ROC curves and other ways of quantifying imaging techniques was useful because they were translatable to other things like classifiers in machine learning. Fun fact: the ROC curve originated from the battlefields of World War II, where it was used to quantify enemy detection.
 
 
-    ![BOOM!](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Trinitrotoluene.svg/200px-Trinitrotoluene.svg.png){: .center-image }
+    ![ROC.png]({{site.baseurl}}/_posts/ROC.png){: .center-image }
+    
+    After that, we learned about more about the actual image capture, and here there was some overlap with one of the sections in optics 3645 (in fact, the same prof taught this part). We learned a bit of the physics and engineering involved in CMOS and CCD sensors, and overall it wasn't hard at all (I felt like we all lacked the physics background to go in-depth). However, the midterm for this section was really hard for some reason.
+    
+    The third section, which I'm currently in, is another overview of MATLAB (it really is used a lot in Biophysics!). I think our prof is doing a really good job with explaining the basics, and he's focusing on image segmentation techniques which I think is really useful. From my own experience, the majority of my MATLAB usage has been to separate out features from an image, so it's quite applicable.
 
-2. dasdad
+2. 
+
