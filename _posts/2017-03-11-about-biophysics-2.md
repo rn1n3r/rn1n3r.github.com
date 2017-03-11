@@ -11,7 +11,7 @@ The last two core third-year courses in the Biophysics program at Western have b
 	The first part of the course started with an overview of imaging science and how its role in medicine, including looking at SNR, contrast, and ROC curves. In particular, learning about ROC curves and other ways of quantifying imaging techniques was useful because they were translatable to other things like classifiers in machine learning. Fun fact: the ROC curve originated from the battlefields of World War II, where it was used to quantify enemy detection.
 
 
-    ![ROC.png]({{site.baseurl}}/_posts/ROC.png){: .center-image }
+    ![ROC]({{site.baseurl}}/_posts/ROC.png){: .center-image }
     
     After that, we learned about more about the actual image capture, and here there was some overlap with one of the sections in optics 3645 (in fact, the same prof taught this part). We learned a bit of the physics and engineering involved in CMOS and CCD sensors, and overall it wasn't hard at all (I felt like we all lacked the physics background to go in-depth). However, the midterm for this section was really hard for some reason.
     
