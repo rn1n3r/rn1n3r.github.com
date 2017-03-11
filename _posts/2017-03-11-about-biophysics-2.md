@@ -13,8 +13,6 @@ The last two core third-year courses in the Biophysics program at Western have b
 
     ![ROC]({{site.url}}/public/ROC.png){: .center-image }
     
-<!--more-->
-    
     After that, we learned about more about the actual image capture, and here there was some overlap with one of the sections in optics 3645 (in fact, the same prof taught this part). We learned a bit of the physics and engineering involved in CMOS and CCD sensors, and overall it wasn't hard at all (I felt like we all lacked the physics background to go in-depth). However, the midterm for this section was really hard for some reason.
     
     The third section, which I'm currently in, is another overview of MATLAB (it really is used a lot in Biophysics!). I think our prof is doing a really good job with explaining the basics, and he's focusing on image segmentation techniques which I think is really useful. From my own experience, the majority of my MATLAB usage has been to separate out features from an image, so it's quite applicable.
