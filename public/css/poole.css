@@ -443,5 +443,6 @@ a.pagination-item:hover {
 img + em {
   display: block;
   text-align: center;
+  font-style: normal;
 
 }
