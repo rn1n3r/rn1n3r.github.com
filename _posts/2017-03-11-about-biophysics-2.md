@@ -12,7 +12,7 @@ The last two core third-year courses in the Biophysics program at Western have b
 
 
     ![ROC]({{site.url}}/public/ROC.png){: .center-image }
-    *Cool caption*
+    *ROC curves of two different red blood cell focus measures*
    
     
     After that, we learned about more about the actual image capture, and here there was some overlap with one of the sections in optics 3645 (in fact, the same prof taught this part). We learned a bit of the physics and engineering involved in CMOS and CCD sensors, and overall it wasn't hard at all (I felt like we all lacked the physics background to go in-depth). However, the midterm for this section was really hard for some reason.
