@@ -36,9 +36,10 @@ The following part removes dulpicated tags and invalid tags like blank tag.
 		{% endunless %}
 	{% endif %}
 {% endfor %}
-
-## Tagged
+{% comment %}
+## Categories
 
 {% for tag in tags %}
-  <h2> {{ tag | slugify }} </h2>
+  <h3> {{ tag | slugify }} </h3>
 {% endfor %}
+{% endcomment %}
