@@ -40,5 +40,5 @@ The following part removes dulpicated tags and invalid tags like blank tag.
 ## Tagged
 
 {% for tag in tags %}
-  ## {{ tag | slugify }}
+  <h2> {{ tag | slugify }} </h2>
 {% endfor %}
