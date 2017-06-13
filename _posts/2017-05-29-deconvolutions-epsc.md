@@ -38,3 +38,7 @@ We know that each delta function has an impulse response modelled with a exponen
 Easy. But what if these impulses were closer to each other? Then the decay of the exponential response would overlap with the rise of the next response, and the resulting signal would not be as easy to find.
 
 This is where **convolutions** come in. We can get the resulting signal simply by *convolving* the input signal with the impulse response function. Conversely, by *deconvolving* an output signal (such as our voltage clamp trace) with the impulse response function, we can get the input signal!
+
+## Tying it all together
+
+Pernía-Andrade *et al* basically did what we just walked through: he modelled the electrical activity of the neuron as an LTI, and found the input signal (the series of EPSCs) by deconvolving the output (the voltage clamp trace) by the impulse response function (he used a biexponential function). This works out pretty well because in reality, the system is pretty much an LTI: it's linear, meaning that the EPSC grows linearly with the amount of neurotransmitters released (at least up to a certain threshold that wouldn't normally be reached in the cell), and it's time-invariant, as the EPSC generated due to an input is the same regardless of when the input is received. It can be argued that experimentally, the cell could start to die during the recording, compromising the activity of the neurotransmitters at the synapse, but for most cases I think the LTI model is accurate.
