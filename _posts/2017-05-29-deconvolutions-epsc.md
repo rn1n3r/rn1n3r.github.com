@@ -12,7 +12,7 @@ Part of what I'm doing involves investigating electrical properties of neurons i
 
 To look at these inputs, the [voltage clamp](https://en.wikipedia.org/wiki/Voltage_clamp) technique is used to hold the membrane potential at a constant level. The current required to keep the constant potential is measured, and the different inputs are represented by spikes, the excitatory postsysnaptic currents (EPSCs). By analyzing the characteristics of these EPSCs (such as the shape of these spikes and their frequencies), we can start to understand the functions of different neurons.
 
-![ROC]({{site.url}}/public/epsc.png){: .center-image }
+![EPSC]({{site.url}}/public/epsc.png){: .center-image }
 *Simulated voltage clamp data*
 
 
