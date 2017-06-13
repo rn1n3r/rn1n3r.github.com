@@ -44,4 +44,14 @@ This is where **convolutions** come in. We can get the resulting signal simply b
 Pernía-Andrade *et al* basically did what we just walked through: he modelled the electrical activity of the neuron as an LTI, and found the input signal (the series of EPSCs) by deconvolving the output (the voltage clamp trace) by the impulse response function (he used a biexponential function). This works out pretty well because in reality, the system is pretty much an LTI:
 - It's *linear*, meaning that the EPSC grows linearly with the amount of neurotransmitters released (at least up to a certain threshold that wouldn't normally be reached in the cell),
 
-- It's time-invariant, as the EPSC generated due to an input is the same regardless of when the input is received. It can be argued that experimentally, the cell could start to die during the recording, compromising the activity of the neurotransmitters at the synapse, but for most cases I think the LTI model is accurate.
+- It's *time-invariant*, as the EPSC generated due to an input is the same regardless of when the input is received. It can be argued that experimentally, the cell could start to die during the recording, compromising the activity of the neurotransmitters at the synapse, but for most cases I think the LTI model is accurate.
+
+The paper goes on to derive a detection threshold for the deconvolved signal by modelling this signal as a Gaussian distribution and making their threshold ($\theta$) 4-4.5 times the $\sigma$ of the distribution. I'm not quite sure how they got this to be honest.
+
+## Some problems
+
+While I think that this paper is really cool and has some real application to the analysis I'm doing, there are some problems.
+
+- Noise isn't really considered, and in these types of recordings the noise tends to take shapes that are very similar to EPSCs. While this doesn't really matter if you're only looking for high amplitude EPSCs, my research requires the detection of EPSCs that are of comparable magnitude to the noise detected.
+
+- This technique works really well if your template function is quite accurate: in my own work, I was blown away by how effective it was. However, the template function I used was an average of manually detected EPSCs. While this can still be used to calculate frequencies in a more quantitative way, it still depends on an accurate template that is subject to human bias.
