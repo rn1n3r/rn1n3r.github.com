@@ -25,6 +25,11 @@ The second property is *time-invariance*. This is much easier to describe intuit
 
 So let's model our neuron (as described above) as an LTI. Our input signal would be a release of neurotransmitters into the synapse. Our output, or *impulse response*, is the change electrical potential in the cell. Mathematically, we can model these inputs as *delta functions*. Since in voltage clamp, we are holding the membrane potential, then a negative current would be detected to counteract the influx of ions. In short, this is the EPSC. Let's assume we can model this with an exponential function.
 
-Now, given that cells receive many signals over time, how can we get the full electrical activity of the cell? You can imagine that this repeated signalling would be a series of delta functions. We know that each delta function has an impulse response modelled with a exponential function. In the case where these signals are spaced out enough, the overall output signal would just be a series of exponentials corresponding to each impulse (see what I did there?). Easy. But what if these impulses were closer to each other? Then the decay of the exponential response would overlap with the rise of the next response, and the resulting signal would not be as easy to find.
+Now, given that cells receive many signals over time, how can we get the full electrical activity of the cell? You can imagine that this repeated signalling would be a series of delta functions.
+
+![EPSC]({{site.url}}/public/deltafunctions.png){: .center-image }
+*Simulated voltage clamp data*
+
+We know that each delta function has an impulse response modelled with a exponential function. In the case where these signals are spaced out enough, the overall output signal would just be a series of exponentials corresponding to each impulse (see what I did there?). Easy. But what if these impulses were closer to each other? Then the decay of the exponential response would overlap with the rise of the next response, and the resulting signal would not be as easy to find.
 
 This is where **convolutions** come in. We can get the resulting signal simply by *convolving* the input signal with the impulse response function. Conversely, by *deconvolving* an output signal (such as our voltage clamp trace) with the impulse response function, we can get the input signal!
