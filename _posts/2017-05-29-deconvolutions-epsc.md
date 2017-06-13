@@ -15,7 +15,9 @@ To look at these inputs, the [voltage clamp](https://en.wikipedia.org/wiki/Volta
 ![EPSC]({{site.url}}/public/epsc.png){: .center-image }
 *Simulated voltage clamp data*
 
-However, manual detection and analysis of these EPSCs is tedious and subject to observer bias. In [this paper](http://www.cell.com/biophysj/fulltext/S0006-3495(12)00935-6)
+However, manual detection and analysis of these EPSCs is tedious and subject to observer bias. In [this paper](http://www.cell.com/biophysj/fulltext/S0006-3495(12)00935-6) by Pernía-Andrade *et al*, a method of detecting EPSCs is proposed using *deconvolutions*.
+
+
 
 
 $$a^2 + b^2 = c^2$$
