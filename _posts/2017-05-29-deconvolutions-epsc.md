@@ -19,6 +19,8 @@ To look at these inputs, the [voltage clamp](https://en.wikipedia.org/wiki/Volta
 
 However, manual detection and analysis of these EPSCs is tedious and subject to observer bias. In [this paper](http://www.cell.com/biophysj/fulltext/S0006-3495(12)00935-6) by Pernía-Andrade *et al*, a method of detecting EPSCs is proposed using *deconvolutions*.
 
+<!--more-->
+
 Now, if you don't know what a deconvolution is (or a convolution, for that matter), don't worry (I'm looking at you, future Edward :smirk:). I'll try and break it down here, but I can't promise I'll do a good job. First, we'll start with a description of **linear time-invariant systems (LTI)**. An LTI is a system that is *linear*: meaning that the output of the system is a linear map (where *addition* and *scalar multiplication* are conserved). So if I have an input $x_1(t)$ with an output $y_1(t)$, and an input $x_2(t) \to y_2(t)$, then $3x_1(t) \to 3y_1(t)$, and $x_1(t) + x_2(t) \to y_1(t) + y_2(t)$.  
 
 The second property is *time-invariance*. This is much easier to describe intuitively: it simply means that the output of a given input does not vary with time. Formally, if $x(t) \to y(t)$, then $x(t - t_0) \to y(t - t_0)$.
