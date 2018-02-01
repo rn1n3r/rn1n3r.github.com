@@ -8,8 +8,8 @@ permalink:        pretty
 title:            Edward's Home
 tagline:          ''
 description:      "Me: Who's smart in your class? Helen Dong: Me!"
-url:              http://rn1n3r.github.com
-baseurl:          edho.me
+url:              http://edho.me
+baseurl:          / 
 
 author:
   name:           'Edward Ho'
