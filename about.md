@@ -5,6 +5,7 @@ published: true
 ---
 
 Scribbles wander across the sheets and pages,
+
 Whispers tangled within the chaotic mess
 What must be said cannot be written,
 For there is uncertainty in the air
