@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Working through the  2019-nCoV reports
+title: Working through the MRC/WHO 2019-nCoV reports
 ---
 
 A team at Imperial College London working with the WHO (I think?) has put together a set of preliminary reports on the 2019 novel coronavirus that can be found [here](https://www.imperial.ac.uk/mrc-global-infectious-disease-analysis/news--wuhan-coronavirus/). Here, I will document some of the challenges I personally found while working my way through their analysis. I am not an epidemiologist or a statistician, so this was a great learning experience for me. Any comments I make here could very well be wrong though so let me know.
