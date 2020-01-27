@@ -20,10 +20,12 @@ That... doesn't really make sense as an equation. If the daily probability of tr
 
 Fortunately, my friend Nancy, who is studying epidemiology, was able to clear it up for me. She explained to me that the equation was probably just approximating the probability of a overseases detection by observing that you were more likely to be detected *overseas* if the detection time was longer. The longer the detection time, the more likely you flew out of Wuhan before you theoretically would have been detected *within Wuhan*. She added that there *are* equations like this in epidemiology where approximations can be made assuming the probability of something (e.g. prevalence of a disease) is small.
 
-And then I realized that we could directly calculate the probability that someone leaves the country within the detection timeframe, and it wasn't a complex calculation, especially since our estimated time to detection is in whole days.
+And then I realized that we could directly calculate the probability that someone leaves the country within the detection timeframe, and it wasn't a complex calculation, especially since our estimated time to detection is in whole days. The probability can be expressed as the *opposite* of the probability that one never leaves Wuhan in the detection timeframe:
 
 
 <p align="center">$p = 1-(1-p_{\text{international travel}})^{t_{\text{detection}}}$</p>
+
+Of course when I used this equation, the probability I got was essentially the same as the approximation used. Interestingly, it looks like this equation can be expanded using the Binomial Theorem, and with a quick Google I realized that the authors of the report used [a well-known approximation for estimating binomial probabilities](https://www.johndcook.com/blog/2009/06/25/probability-approximation/). 
 
 
     qnbinom
