@@ -40,4 +40,16 @@ binomially distributed function of X. The results in Table 1 are maximum likelih
 obtained using this negative binomial likelihood function. We now report overall uncertainty
 as the range spanned by the 95% confidence intervals of the first three scenarios in Table 1.
 
-    qnbinom
+Just for personal reference, I'm pretty sure that since $N$ is being modelled by the negative binomial distribution, and we know $p$ from the above discussion and $X$ from news reports, then we *don't need to use a maximum likelihood estimate*. The estimate of $N$ would just be the expected value (mean) of the distribution, and the confidence interval can be built with the distribution quantiles. I may be wrong about this but I don't see any other explanation. [Some discussion (in Chinese) here](https://2049bbs.xyz/t/2545).
+
+Also mostly for my own reference, here's some R code to calculate the mean and CI.
+
+    lower <- qnbinom(0.025, size=7, prob=prob)
+	mean <- n*(1-prob)/prob
+	upper <- qnbinom(0.975, size=7, prob=prob)
+
+which gives me an estimate of 4022 95% CI [1615, 7507]. This is close to the values in the report ([1700, 7800]), but just off enough that I'm still not sure what's going on. 
+
+My last note is that for calculating the mean of the negative binomial distribution, the equation is $n(1-p)/p$ (Wolfram Alpha) and not $np/(1-p)$ (Wikipedia) simply because the distribution is [defined by Wikipedia as the number of successes before a specified number of failures occur](https://en.wikipedia.org/wiki/Negative_binomial_distribution), and not [the other way around as it is in R](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/NegBinomial.html). 
+
+Hopefully that clears up some parts of Report 2. Again, as of the time of writing this analysis is important because it leads to an expert prediction of $R_0$, which is a big factor to consider when assessing infectious diseases.
