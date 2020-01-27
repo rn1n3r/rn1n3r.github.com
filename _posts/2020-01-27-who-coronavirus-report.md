@@ -9,11 +9,8 @@ One reason why reports like this are important is because they allow us to predi
 
 My first confusion with this analysis comes with the calculation of this probability. In the Methods section, they describe the probability as being calculated as such:
 
-$p = \text{daily probability of international travel} \times \bar{t}_{\text{detection}}$
+<p align="center">$p = \text{daily probability of international travel} \times \text{mean time to detection of a case}$
  
-
-
-Anyhow, one thing that really messed me up was that I kept forgetting to run the configure script. I thought that all the 'configuration' was done in the make file, but I guess I was wrong. In any case, you can install git locally (no admin privileges :cry:) like this:
 
     tar xzvf git-1.8.4.2.tar.bz2
     cd git-1.8.4.2
