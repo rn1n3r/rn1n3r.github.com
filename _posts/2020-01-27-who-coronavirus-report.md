@@ -7,6 +7,8 @@ A team at Imperial College London working with the WHO (I think?) has put togeth
 
 One reason why reports like this are important is because they allow us to predict how contagious an infectious disease is using a value called the basic reproductive number $R_0$. To predict this, the authors of the reports first generate an estimate of how many cases of the virus were in Wuhan. This analysis is described in [Report 2](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/2019-nCoV-outbreak-report-22-01-2020.pdf), specifically in the Methods section at the end. They infer this by using the number of confirmed cases detected internationally and estimating the *probability of a particular disease case in Wuhan being detected internationally*. 
 
+## Approximation of international detection probability
+
 My first confusion with this analysis comes with the calculation of this probability. In the Methods section, they describe the probability as being calculated as such:
 
 <p align="center">$p = \text{daily probability of international travel} \times \text{mean time to detection of a case}$</p>
@@ -25,7 +27,17 @@ And then I realized that we could directly calculate the probability that someon
 
 <p align="center">$p = 1-(1-p_{\text{international travel}})^{t_{\text{detection}}}$</p>
 
-Of course when I used this equation, the probability I got was essentially the same as the approximation used. Interestingly, it looks like this equation can be expanded using the Binomial Theorem, and with a quick Google I realized that the authors of the report used [a well-known approximation for estimating binomial probabilities](https://www.johndcook.com/blog/2009/06/25/probability-approximation/). Fair enough, although it would probably have been a good idea to explain the approximation or something. The way it's presented in the report makes it look like a definitive calculation and at the very least caused me great confusion :haha:.
+Of course when I used this equation, the probability I got was essentially the same as the approximation used. Interestingly, it looks like this equation can be expanded using the Binomial Theorem, and with a quick Google I realized that the authors of the report used [a well-known approximation for estimating binomial probabilities](https://www.johndcook.com/blog/2009/06/25/probability-approximation/). Fair enough, although it would probably have been a good idea to explain the approximation or something. The way it's presented in the report makes it look like a definitive calculation and at the very least caused me great confusion :sweat_smile:.
 
+## Confidence Intervals
+
+The second thing that really confused me concerns the calculation of 95% confidence intervals for the estimated number of cases in Wuhan. In the Methods page, the authors write:
+
+>Confidence intervals can be calculated from the observation that the number of cases
+detected overseas, X, is binomially distributed as Bin(p,N), where p = probability any one
+case will be detected overseas, and N is the total number of cases. N is therefore a negative
+binomially distributed function of X. The results in Table 1 are maximum likelihood estimates
+obtained using this negative binomial likelihood function. We now report overall uncertainty
+as the range spanned by the 95% confidence intervals of the first three scenarios in Table 1.
 
     qnbinom
