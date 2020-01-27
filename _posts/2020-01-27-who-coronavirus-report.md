@@ -23,7 +23,7 @@ Fortunately, my friend Nancy, who is studying epidemiology, was able to clear it
 And then I realized that we could directly calculate the probability that someone leaves the country within the detection timeframe, and it wasn't a complex calculation, especially since our estimated time to detection is in whole days.
 
 
-<p align="center">$p = 1-(1-p_{\text{international travel}})^t_{\text{detection}}$</p>
+<p align="center">$p = 1-(1-p_{\text{international travel}})^{t_{\text{detection}}}$</p>
 
 
     qnbinom
