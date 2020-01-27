@@ -9,7 +9,7 @@ One reason why reports like this are important is because they allow us to predi
 
 My first confusion with this analysis comes with the calculation of this probability. In the Methods section, they describe the probability as being calculated as such:
 
-<p align="center">$p = \text{daily probability of international travel} \times \text{mean time to detection of a case}$
+<p align="center">$p = \text{daily probability of international travel} \times \text{mean time to detection of a case}$</p>
  
 
     tar xzvf git-1.8.4.2.tar.bz2
