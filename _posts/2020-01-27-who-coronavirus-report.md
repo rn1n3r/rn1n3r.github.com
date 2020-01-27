@@ -25,7 +25,7 @@ And then I realized that we could directly calculate the probability that someon
 
 <p align="center">$p = 1-(1-p_{\text{international travel}})^{t_{\text{detection}}}$</p>
 
-Of course when I used this equation, the probability I got was essentially the same as the approximation used. Interestingly, it looks like this equation can be expanded using the Binomial Theorem, and with a quick Google I realized that the authors of the report used [a well-known approximation for estimating binomial probabilities](https://www.johndcook.com/blog/2009/06/25/probability-approximation/). 
+Of course when I used this equation, the probability I got was essentially the same as the approximation used. Interestingly, it looks like this equation can be expanded using the Binomial Theorem, and with a quick Google I realized that the authors of the report used [a well-known approximation for estimating binomial probabilities](https://www.johndcook.com/blog/2009/06/25/probability-approximation/). Fair enough, although it would probably have been a good idea to explain the approximation or something. The way it's presented in the report makes it look like a definitive calculation and at the very least caused me great confusion :haha:.
 
 
     qnbinom
