@@ -9,7 +9,7 @@ title:            Edward's Home
 tagline:          ''
 description:      "Me: Who's smart in your class? Helen Dong: Me!"
 url:              http://edho.me
-baseurl:          / 
+#baseurl:          / 
 
 author:
   name:           'Edward Ho'
