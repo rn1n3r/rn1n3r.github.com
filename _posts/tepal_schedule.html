@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radiology Schedule Viewer</title>
+
+<style>:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --border: #e0e3e8;
+  --text: #1a1d23;
+  --muted: #6b7280;
+  --accent: #3a6cc9;
+  --today-bg: #fff6d8;
+  --group-bg: #eef1f6;
+  --chip-bg: #f1f3f6;
+  --understaffed-bg: #fde2e1;
+  --understaffed-text: #9c1f1a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --panel: #1c1f26;
+    --border: #2c313a;
+    --text: #e7e9ee;
+    --muted: #9aa1ad;
+    --accent: #6f9bf0;
+    --today-bg: #3a3320;
+    --group-bg: #23262e;
+    --chip-bg: #262a33;
+    --understaffed-bg: #3a2020;
+    --understaffed-text: #ff8a83;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+header h1 {
+  font-size: 16px;
+  margin: 0;
+  white-space: nowrap;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+button {
+  font: inherit;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+button:hover { background: var(--group-bg); }
+#weekLabel {
+  font-weight: 600;
+  min-width: 160px;
+}
+#filterInput {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  margin-left: auto;
+  min-width: 180px;
+}
+.source-bar {
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.source-bar label[for="sourceInput"] {
+  white-space: nowrap;
+}
+#sourceInput {
+  font: inherit;
+  font-size: 13px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  flex: 1 1 260px;
+  min-width: 160px;
+}
+.file-btn {
+  font-size: 13px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.file-btn:hover { background: var(--group-bg); }
+main {
+  padding: 16px;
+}
+#statusMsg {
+  padding: 24px;
+  color: var(--muted);
+}
+#statusMsg.error {
+  color: var(--understaffed-text);
+  background: var(--understaffed-bg);
+  border-radius: 8px;
+}
+#statusMsg code {
+  background: var(--chip-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-height: calc(100vh - 90px);
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: var(--panel);
+}
+th, td {
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 6px 8px;
+  vertical-align: top;
+  text-align: left;
+}
+th:last-child, td:last-child { border-right: none; }
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 20;
+  padding: 8px;
+}
+.shift-col {
+  position: sticky;
+  left: 0;
+  background: var(--panel);
+  z-index: 10;
+  min-width: 170px;
+  max-width: 200px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+thead .shift-col { z-index: 25; }
+.swatch {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.day-col {
+  min-width: 150px;
+}
+th.day-col {
+  text-align: center;
+}
+.dow { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+.dnum { font-size: 14px; font-weight: 600; }
+td.today, th.day-col.today {
+  background: var(--today-bg);
+}
+.shift-col.today { background: var(--today-bg); }
+tr.group-row th {
+  background: var(--group-bg);
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: static;
+  padding: 5px 8px;
+}
+.req-block:not(:last-child) {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+}
+.slot-group {
+  background: var(--chip-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 3px 7px;
+  margin: 2px 0;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.slot-time {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 1px;
+}
+.slot-names {
+  font-weight: 600;
+}
+.slot-name.remote::after {
+  content: "\1F310";
+  font-size: 10px;
+  margin-left: 2px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--chip-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 3px 7px;
+  margin: 2px 3px 2px 0;
+  font-size: 12px;
+  line-height: 1.25;
+  cursor: default;
+}
+.chip.empty {
+  border-left-color: var(--border);
+  color: var(--muted);
+  font-style: italic;
+}
+.chip.understaffed {
+  background: var(--understaffed-bg);
+  color: var(--understaffed-text);
+  border-left-color: var(--understaffed-text);
+  font-style: normal;
+}
+.no-results {
+  text-align: center;
+  color: var(--muted);
+  padding: 24px !important;
+}
+</style>
+
+</head>
+<body>
+<header>
+  <h1>Radiology Schedule</h1>
+  <div class="controls">
+    <button id="prevBtn" aria-label="Previous week">&#9664; Prev</button>
+    <button id="todayBtn">Today</button>
+    <button id="nextBtn" aria-label="Next week">Next &#9654;</button>
+    <span id="weekLabel"></span>
+  </div>
+  <input id="filterInput" type="search" placeholder="Filter shift type…">
+  <div class="source-bar">
+    <label for="sourceInput">Source:</label>
+    <input id="sourceInput" type="text" placeholder="e.g. august.json or https://example.com/schedule.json">
+    <button id="loadBtn">Load</button>
+    <span>or</span>
+    <label class="file-btn">
+      Choose file…
+      <input id="fileInput" type="file" accept="application/json,.json" hidden>
+    </label>
+  </div>
+</header>
+<main>
+  <p id="statusMsg">Loading…</p>
+  <div class="table-wrap" id="tableWrap" hidden>
+    <table id="scheduleTable"></table>
+  </div>
+</main>
+<script>(function () {
+  // ---------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------
+  // rawData holds the parsed contents of august.json verbatim: an array of
+  // "shift type" entries, each with a requirementsPerDay map keyed by
+  // "YYYY-MM-DD" date strings. See the JSON PARSING section below for how
+  // it's loaded, and the RENDERING section for how it's walked to build
+  // the table.
+  let rawData = [];
+  let weekStart = getMonday(new Date());
+  let dataMin = null; // earliest "YYYY-MM-DD" date string found anywhere in the JSON
+  let dataMax = null; // latest "YYYY-MM-DD" date string found anywhere in the JSON
+  let sourceLabel = ''; // filename/URL currently loaded, shown in the source bar
+
+  const statusMsg = document.getElementById('statusMsg');
+  const tableWrap = document.getElementById('tableWrap');
+  const table = document.getElementById('scheduleTable');
+  const weekLabel = document.getElementById('weekLabel');
+  const filterInput = document.getElementById('filterInput');
+  const sourceInput = document.getElementById('sourceInput');
+  const loadBtn = document.getElementById('loadBtn');
+  const fileInput = document.getElementById('fileInput');
+
+  // ---------------------------------------------------------------------
+  // JSON PARSING
+  // ---------------------------------------------------------------------
+  // The schedule JSON isn't hardcoded to one filename — it can be pointed
+  // at any URL/path (via fetch) or any local file the user picks (via
+  // the browser's file input + FileReader). Both paths converge on
+  // onDataLoaded(), which is the single place that takes parsed JSON and
+  // hands it off to the rest of the app.
+
+  // Loads and parses a JSON document from a URL or relative path.
+  // fetch() reads it as plain text over HTTP, and response.json() parses
+  // that text into a JS array/object tree in one step. Note this requires
+  // the page itself to be served over http(s):// — opening index.html
+  // directly as a file:// URL causes fetch() to be blocked by the browser,
+  // which is why showError() below has a specific message for that case.
+  function loadFromUrl(source) {
+    statusMsg.hidden = false;
+    statusMsg.className = '';
+    statusMsg.textContent = 'Loading ' + source + '…';
+    tableWrap.hidden = true;
+
+    fetch(source)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' fetching ' + source);
+        return r.json(); // parses the response body as JSON -> JS values
+      })
+      .then(function (data) { onDataLoaded(data, source); })
+      .catch(showError);
+  }
+
+  // Loads and parses a JSON document the user picked from local disk via
+  // <input type="file">. This doesn't go through fetch/HTTP at all — the
+  // File object never leaves the browser, so FileReader.readAsText() +
+  // JSON.parse() is used instead, letting the viewer open any JSON file
+  // on the user's machine regardless of where it's served from.
+  function loadFromFile(file) {
+    statusMsg.hidden = false;
+    statusMsg.className = '';
+    statusMsg.textContent = 'Loading ' + file.name + '…';
+    tableWrap.hidden = true;
+
+    const reader = new FileReader();
+    reader.onload = function () {
+      try {
+        const data = JSON.parse(reader.result); // parses the file's text as JSON -> JS values
+        onDataLoaded(data, file.name);
+      } catch (err) {
+        showError(new Error('Could not parse ' + file.name + ' as JSON (' + err.message + ')'));
+      }
+    };
+    reader.onerror = function () { showError(new Error('Could not read ' + file.name)); };
+    reader.readAsText(file);
+  }
+
+  // Common entry point once a JSON document has been parsed, regardless
+  // of whether it came from fetch() or a local file.
+  function onDataLoaded(data, label) {
+    rawData = Array.isArray(data) ? data : [];
+    sourceLabel = label;
+    sourceInput.value = label;
+    init();
+  }
+
+  // One-time setup once the JSON has successfully loaded: figure out what
+  // date range the data actually covers, and pick the initial week to show.
+  function init() {
+    // Scan every entry's requirementsPerDay object and collect its date
+    // keys, so we know the full span of dates present in the file without
+    // hardcoding "August" anywhere.
+    const allDates = [];
+    rawData.forEach(function (entry) {
+      Object.keys(entry.requirementsPerDay || {}).forEach(function (d) { allDates.push(d); });
+    });
+    allDates.sort();
+    dataMin = allDates[0] || null;
+    dataMax = allDates[allDates.length - 1] || null;
+
+    // Default to the week containing today's date, but clamp into the
+    // data's range if "today" falls outside what was exported.
+    const todayStr = fmtDate(new Date());
+    if (dataMin && todayStr < dataMin) {
+      weekStart = getMonday(new Date(dataMin + 'T00:00:00'));
+    } else if (dataMax && todayStr > dataMax) {
+      weekStart = getMonday(new Date(dataMax + 'T00:00:00'));
+    } else {
+      weekStart = getMonday(new Date());
+    }
+
+    statusMsg.hidden = true;
+    tableWrap.hidden = false;
+    render();
+  }
+
+  // Shown on initial page load when there's no ?src= param, and no data has
+  // been chosen yet — the default state now that nothing is auto-fetched.
+  function showEmptyPrompt() {
+    statusMsg.hidden = false;
+    statusMsg.className = '';
+    tableWrap.hidden = true;
+    statusMsg.innerHTML =
+      '<strong>No schedule loaded.</strong><br>' +
+      'Choose a schedule JSON file from your computer to view it here. ' +
+      'It is read locally via FileReader and never leaves this page.' +
+      '<br><br><button type="button" class="file-btn" id="emptyChooseBtn">Choose file…</button>';
+    document.getElementById('emptyChooseBtn').addEventListener('click', function () {
+      fileInput.click();
+    });
+  }
+
+  function showError(err) {
+    statusMsg.hidden = false;
+    statusMsg.className = 'error';
+    tableWrap.hidden = true;
+    statusMsg.innerHTML =
+      '<strong>Could not load the schedule.</strong><br>' +
+      escapeHtml(err.message) + '<br><br>' +
+      'If you’re loading from a URL, the browser may be blocking fetch() ' +
+      '(e.g. if this page was opened directly from disk as a file:// URL). ' +
+      'Use "Choose file…" above instead — it works regardless of how this page is hosted.';
+  }
+
+  // ---------------------------------------------------------------------
+  // Date helpers
+  // ---------------------------------------------------------------------
+
+  // Returns the Monday (local time, midnight) of the week containing d.
+  function getMonday(d) {
+    const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const day = nd.getDay(); // 0 = Sunday ... 6 = Saturday
+    const diff = (day === 0 ? -6 : 1) - day;
+    nd.setDate(nd.getDate() + diff);
+    return nd;
+  }
+
+  // Formats a Date as "YYYY-MM-DD" using local calendar fields, matching
+  // the date-string keys used in each entry's requirementsPerDay object.
+  function fmtDate(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function formatRange(start, end) {
+    const startStr = start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const endStr = end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    return startStr + ' – ' + endStr;
+  }
+
+  // Formats an account as "F. Last" (first initial + last name), falling
+  // back to the account's initials if a name isn't present.
+  function personLabel(acct) {
+    if (acct.firstName || acct.lastName) {
+      const initial = acct.firstName ? acct.firstName.charAt(0) + '.' : '';
+      return (initial ? initial + ' ' : '') + (acct.lastName || '');
+    }
+    return acct.initials || '?';
+  }
+
+  // Formats an assignment's startTime/endTime (ISO UTC strings) as a
+  // local-time range, e.g. "10:00 AM–11:00 AM".
+  function timeRangeLabel(a) {
+    if (!a.startTime || !a.endTime) return '';
+    const start = new Date(a.startTime).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    const end = new Date(a.endTime).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return start + '–' + end;
+  }
+
+  // Formats an ISO timestamp (e.g. an assignment's createdAt) as a local
+  // date + time, e.g. "Jun 22, 2026, 2:36 PM".
+  function formatDateTime(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  }
+
+  // Groups a requirement's assignments by exact (startTime, endTime), so
+  // several people covering the identical slot are listed together under
+  // one time label instead of each repeating it. Order of first
+  // appearance is preserved, both across groups and within a group.
+  function groupAssignmentsByTime(assignments) {
+    const order = [];
+    const byKey = {};
+    assignments.forEach(function (a) {
+      const key = (a.startTime || '') + '|' + (a.endTime || '');
+      if (!byKey[key]) { byKey[key] = []; order.push(key); }
+      byKey[key].push(a);
+    });
+    return order.map(function (key) { return byKey[key]; });
+  }
+
+  // ---------------------------------------------------------------------
+  // Small DOM utilities
+  // ---------------------------------------------------------------------
+
+  // Escapes text for safe insertion via innerHTML (used only for the
+  // error message, where the string isn't otherwise attacker-controlled
+  // but we escape defensively anyway).
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s == null ? '' : String(s);
+    return div.innerHTML;
+  }
+
+  // Creates an element with an optional class and text content. Uses
+  // textContent (not innerHTML) so any names/labels from the JSON are
+  // always treated as plain text, never parsed as markup.
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // ---------------------------------------------------------------------
+  // RENDERING
+  // ---------------------------------------------------------------------
+  // Rebuilds the entire <table> from rawData for the 7 days starting at
+  // weekStart. Called on load and whenever the visible week or the filter
+  // text changes. The JSON shape being walked here is:
+  //
+  //   rawData: [
+  //     {
+  //       label, colorHex, displaySequence,
+  //       group: { name, ... },
+  //       requirementsPerDay: {
+  //         "YYYY-MM-DD": [
+  //           { minimum, required: { minimum }, assignments: [
+  //               { account: { firstName, lastName, initials }, startTime,
+  //                 endTime, remote, annotation }, ...
+  //           ] }, ...
+  //         ]
+  //       }
+  //     }, ...
+  //   ]
+  function render() {
+    // Build the 7 date objects (and their "YYYY-MM-DD" keys) for the
+    // currently selected week.
+    const weekDates = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      weekDates.push(d);
+    }
+    const weekDateStrs = weekDates.map(fmtDate);
+    const todayStr = fmtDate(new Date());
+    weekLabel.textContent = formatRange(weekDates[0], weekDates[6]);
+
+    const filter = filterInput.value.trim().toLowerCase();
+
+    // Group the flat rawData array by entry.group.name (e.g. "DOR KHSC"
+    // vs "On-call/Vacation"), preserving first-seen group order, then sort
+    // each group's rows by displaySequence to match the source system's
+    // intended ordering.
+    const groupOrder = [];
+    const groups = {};
+    rawData.forEach(function (entry) {
+      const gname = (entry.group && entry.group.name) || 'Other';
+      if (!groups[gname]) { groups[gname] = []; groupOrder.push(gname); }
+      groups[gname].push(entry);
+    });
+    groupOrder.forEach(function (g) {
+      groups[g].sort(function (a, b) { return (a.displaySequence || 0) - (b.displaySequence || 0); });
+    });
+
+    table.innerHTML = '';
+
+    // --- Header row: "Shift" label column + one column per day ---
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    headRow.appendChild(el('th', 'shift-col', 'Shift'));
+    weekDates.forEach(function (d) {
+      const ds = fmtDate(d);
+      const th = document.createElement('th');
+      th.className = 'day-col' + (ds === todayStr ? ' today' : '');
+      const dow = el('div', 'dow', d.toLocaleDateString(undefined, { weekday: 'short' }));
+      const dnum = el('div', 'dnum', d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+      th.appendChild(dow);
+      th.appendChild(dnum);
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    // --- Body: one section per group, one row per shift type ---
+    const tbody = document.createElement('tbody');
+    let anyRows = false;
+
+    groupOrder.forEach(function (gname) {
+      // Apply the free-text filter against each shift type's label.
+      const rowsForGroup = groups[gname].filter(function (entry) {
+        return !filter || entry.label.toLowerCase().includes(filter);
+      });
+      if (rowsForGroup.length === 0) return;
+      anyRows = true;
+
+      // Group header row spans the label column + all 7 day columns.
+      const groupRow = document.createElement('tr');
+      groupRow.className = 'group-row';
+      const gth = document.createElement('th');
+      gth.colSpan = 8;
+      gth.textContent = gname;
+      groupRow.appendChild(gth);
+      tbody.appendChild(groupRow);
+
+      rowsForGroup.forEach(function (entry) {
+        const tr = document.createElement('tr');
+
+        // First cell: shift type name + its color swatch.
+        const labelCell = document.createElement('th');
+        labelCell.className = 'shift-col';
+        labelCell.title = entry.label;
+        const swatch = el('span', 'swatch');
+        swatch.style.background = entry.colorHex || '#999';
+        labelCell.appendChild(swatch);
+        labelCell.appendChild(document.createTextNode(entry.label));
+        tr.appendChild(labelCell);
+
+        // One cell per day: look up this entry's requirementsPerDay
+        // for that date string and render its assignments, if any.
+        weekDateStrs.forEach(function (ds) {
+          const td = document.createElement('td');
+          td.className = 'day-col' + (ds === todayStr ? ' today' : '');
+
+          // This is the core JSON lookup: requirementsPerDay is a plain
+          // object keyed by date string, so a missing day (no shift
+          // scheduled) simply yields an empty array here.
+          const reqs = (entry.requirementsPerDay && entry.requirementsPerDay[ds]) || [];
+
+          // Usually there's a single requirement per day, but some shift
+          // types (e.g. "Admin") define more than one time slot per day,
+          // so each is rendered as its own block within the cell.
+          reqs.forEach(function (req) {
+            const block = el('div', 'req-block');
+            const assignments = req.assignments || [];
+            const minReq = (req.required && req.required.minimum) || req.minimum || 0;
+
+            if (assignments.length === 0) {
+              // No one assigned. Flag it in red if the slot actually
+              // requires staffing (minimum > 0).
+              const chip = el('span', 'chip empty' + (minReq > 0 ? ' understaffed' : ''), minReq > 0 ? '— unfilled' : '—');
+              block.appendChild(chip);
+            } else {
+              // Assignments that share the exact same start/end time (the
+              // common case: everyone covering one slot) are grouped so
+              // the time is shown once, with all their names underneath —
+              // rather than one chip per person each repeating the time.
+              const timeGroups = groupAssignmentsByTime(assignments);
+              timeGroups.forEach(function (group) {
+                const slot = el('div', 'slot-group');
+                slot.style.borderLeftColor = entry.colorHex || '#999';
+
+                const timeStr = timeRangeLabel(group[0]);
+                if (timeStr) slot.appendChild(el('div', 'slot-time', timeStr));
+
+                const names = el('div', 'slot-names');
+                group.forEach(function (a, i) {
+                  const acct = a.account || {};
+                  const nameSpan = el('span', 'slot-name' + (a.remote ? ' remote' : ''), personLabel(acct));
+                  // Remaining details (annotation, remote flag, and when
+                  // this assignment was last created/updated) stay in the
+                  // hover tooltip rather than cluttering the visible list.
+                  const titleParts = [];
+                  if (a.annotation) titleParts.push(a.annotation);
+                  if (a.remote) titleParts.push('Remote');
+                  if (a.createdAt) titleParts.push('Updated ' + formatDateTime(a.createdAt));
+                  if (titleParts.length) nameSpan.title = titleParts.join(' · ');
+                  names.appendChild(nameSpan);
+                  if (i < group.length - 1) names.appendChild(document.createElement('br'));
+                });
+                slot.appendChild(names);
+
+                block.appendChild(slot);
+              });
+              // Partially staffed: assigned but fewer than the minimum
+              // required, so add a supplementary warning chip.
+              if (assignments.length < minReq) {
+                const warn = el('span', 'chip understaffed', 'need ' + (minReq - assignments.length) + ' more');
+                block.appendChild(warn);
+              }
+            }
+            td.appendChild(block);
+          });
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    });
+
+    if (!anyRows) {
+      const tr = document.createElement('tr');
+      const td = el('td', 'no-results', 'No shift types match your filter.');
+      td.colSpan = 8;
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+  }
+
+  // ---------------------------------------------------------------------
+  // Controls: week navigation and filtering just mutate state and re-run
+  // render() — no data is re-fetched, since rawData already holds
+  // everything from the currently loaded source.
+  // ---------------------------------------------------------------------
+  document.getElementById('prevBtn').addEventListener('click', function () {
+    weekStart.setDate(weekStart.getDate() - 7);
+    render();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function () {
+    weekStart.setDate(weekStart.getDate() + 7);
+    render();
+  });
+  document.getElementById('todayBtn').addEventListener('click', function () {
+    weekStart = getMonday(new Date());
+    render();
+  });
+  filterInput.addEventListener('input', render);
+
+  // ---------------------------------------------------------------------
+  // Source controls: type a path/URL and click Load (or press Enter), or
+  // pick a local file. Loading a typed path also stamps it into the page
+  // URL's ?src= query param so the chosen source is bookmarkable/shareable.
+  // ---------------------------------------------------------------------
+  function loadFromTypedSource() {
+    const value = sourceInput.value.trim();
+    if (!value) return;
+    const url = new URL(window.location);
+    url.searchParams.set('src', value);
+    history.replaceState(null, '', url);
+    loadFromUrl(value);
+  }
+  loadBtn.addEventListener('click', loadFromTypedSource);
+  sourceInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') loadFromTypedSource();
+  });
+
+  fileInput.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    // A locally picked file isn't a fetchable URL, so drop any ?src=
+    // param rather than leaving a stale/misleading one in the address bar.
+    const url = new URL(window.location);
+    url.searchParams.delete('src');
+    history.replaceState(null, '', url);
+    loadFromFile(file);
+  });
+
+  // ---------------------------------------------------------------------
+  // Initial load: no file is fetched automatically. A ?src=<path or URL>
+  // query parameter still works if you want that (e.g.
+  // index.html?src=august.json), but by default the page starts empty and
+  // waits for "Choose file…", which reads the JSON straight off disk via
+  // FileReader — no fetch, so it works identically whether this page is
+  // opened as a file:// URL or served over HTTP.
+  // ---------------------------------------------------------------------
+  const initialSource = new URLSearchParams(window.location.search).get('src');
+  if (initialSource) {
+    sourceInput.value = initialSource;
+    loadFromUrl(initialSource);
+  } else {
+    showEmptyPrompt();
+  }
+})();
+</script>
+</body>
+</html>
